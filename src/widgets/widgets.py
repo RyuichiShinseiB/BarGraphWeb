@@ -1,17 +1,18 @@
-import numpy as np
 import streamlit as st
+from typing import TypeVar
+
+T = TypeVar("T", str, int, float)
 
 
 def create_textbox(
     label: str,
+    value_type: type[T],
     default_value: str = "",
-    key: str | None = None
-) -> float:
+    key: str | None = None,
+) -> T:
     input_tmp = st.text_input(label, value=default_value, key=key)
-    # TODO: `default_value`の型と出力の型を合わせるようにする
-    # TODO: `except`が起きた場合、`default_value`を出力するようにする
     try:
-        return float(input_tmp)
+        return value_type(input_tmp)
     except ValueError:
         st.markdown("Set a Numerical value")
-        return np.nan
+        return value_type(default_value)
