@@ -1,9 +1,16 @@
+import warnings
+from typing import TypeGuard
+
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
-import warnings
 from matplotlib.figure import Figure
-from typing import TypeGuard
+
+
+def _is_not_none_or_nan(
+    x: tuple[float, float] | None
+) -> TypeGuard[tuple[float, float]]:
+    return x is not None and not any(np.isnan(x))
 
 
 def calc_hist(
@@ -17,23 +24,17 @@ def calc_hist(
             "but only the first two will be used.",
             UserWarning
         )
-    x_min = x.min() if xlim is None else xlim[0]
-    x_max = x.max() if xlim is None else xlim[1]
+    x_min = xlim[0] if _is_not_none_or_nan(xlim) else x.min()
+    x_max = xlim[1] if _is_not_none_or_nan(xlim) else x.max()
     bins = np.arange(np.floor(x_min), np.ceil(x_max) + step, step=step)
-
     xticks = np.convolve(bins, [1/2, 1/2], mode="valid")
     xlabels: list[str] = [
-        f"[{i * step}, {(i + 1) * step})" for i in range(len(xticks))
+        f"[{bins[i]}, {bins[i + 1]})" for i in range(len(xticks) )
+        # f"[{i * step}, {(i + 1) * step})" for i in range(len(xticks))
     ]
     hist, _ = np.histogram(x, bins, range=(x_min, x_max))
 
     return hist, xticks, xlabels
-
-
-def _is_not_none_or_nan(
-    x: tuple[float, float] | None
-) -> TypeGuard[tuple[float, float]]:
-    return x is not None and not any(np.isnan(x))
 
 
 def plot_hist(
@@ -44,6 +45,7 @@ def plot_hist(
     bin_width: float = 0.9,
     x_label: str = "x",
     y_label: str = "y",
+    label_angle: float = 0,
     legend: str | None = None,
     is_set_xticklabels: bool = False,
     is_showing_legend: bool = False,
@@ -64,7 +66,7 @@ def plot_hist(
         ax.legend()
     if is_set_xticklabels:
         ax.set_xticks(xticks)
-        ax.set_xticklabels(xlabels)
+        ax.set_xticklabels(xlabels, rotation=label_angle)
 
     return fig
 
@@ -79,4 +81,5 @@ if __name__ == "__main__":
         bin_width=0.01,
         is_set_xticklabels=True
     )
+    plt.show()
     plt.show()
