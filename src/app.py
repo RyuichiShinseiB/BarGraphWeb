@@ -1,11 +1,16 @@
+import json
+from io import BytesIO
+
 import numpy as np
 import numpy.typing as npt
 import streamlit as st
-import json
-from io import BytesIO
-from src.widgets import create_textbox
-from src.plot import plot_hist
 
+from src.plot import plot_hist
+from src.widgets import create_textbox
+
+
+def hoo(x: int) -> str:
+    return str(x)
 st.title("Create Bar Graph!")
 
 # TODO: 前回の設定値をjsonを読み出すようにする
@@ -144,6 +149,9 @@ else:
         )
         buf.close()
     else:
+        st.text("⚠️: Invalid value")
+
+# TODO: 設定値をjson形式で保存できるようにする
         st.text("⚠️: Invalid value")
 
 # TODO: 設定値をjson形式で保存できるようにする
