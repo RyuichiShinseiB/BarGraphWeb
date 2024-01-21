@@ -8,9 +8,6 @@ import streamlit as st
 from src.plot import plot_hist
 from src.widgets import create_textbox
 
-
-def hoo(x: int) -> str:
-    return str(x)
 st.title("Create Bar Graph!")
 
 # TODO: 前回の設定値をjsonを読み出すようにする
