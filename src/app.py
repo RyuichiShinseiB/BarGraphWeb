@@ -4,8 +4,8 @@ import numpy as np
 import numpy.typing as npt
 import streamlit as st
 
-from src.plot import plot_hist
-from src.widgets import create_textbox
+from plot import plot_hist
+from widgets import create_textbox
 
 st.title("Create Bar Graph!")
 
