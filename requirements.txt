@@ -739,6 +739,9 @@ rpds-py==0.17.1 ; python_version >= "3.10" and python_version < "4.0" \
     --hash=sha256:fad059a4bd14c45776600d223ec194e77db6c20255578bb5bcdd7c18fd169361 \
     --hash=sha256:ff1dcb8e8bc2261a088821b2595ef031c91d499a0c1b031c152d43fe0a6ecec8 \
     --hash=sha256:ffee088ea9b593cc6160518ba9bd319b5475e5f3e578e4552d63818773c6f56a
+simpleeval==0.9.13 ; python_version >= "3.10" and python_version < "4.0" \
+    --hash=sha256:22a2701a5006e4188d125d34accf2405c2c37c93f6b346f2484b6422415ae54a \
+    --hash=sha256:4a30f9cc01825fe4c719c785e3762623e350c4840d5e6855c2a8496baaa65fac
 six==1.16.0 ; python_version >= "3.10" and python_version < "4.0" \
     --hash=sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926 \
     --hash=sha256:8abb2f1d86890a2dfb989f9a77cfcfd3e47c2a354b01111771326f8aa26e0254
