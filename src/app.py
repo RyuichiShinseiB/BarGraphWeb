@@ -44,7 +44,7 @@ with st.form(key="config_form"):
 
     st.markdown("## Unit conversion")
     unit_cvt_const = create_textbox(
-        "unit conversion (example: nm/px)",
+        "The csv data is multiplied by this value",
         value_type=float,
         default_value="1",
         key="unit_cvt_const",
