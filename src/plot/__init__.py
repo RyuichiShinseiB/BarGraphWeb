@@ -29,7 +29,7 @@ def calc_hist(
     bins = np.arange(np.floor(x_min), np.ceil(x_max) + step, step=step)
     xticks = np.convolve(bins, [1/2, 1/2], mode="valid")
     xlabels: list[str] = [
-        f"[{bins[i]}, {bins[i + 1]})" for i in range(len(xticks) )
+        f"[{bins[i]}, {bins[i + 1]})" for i in range(len(xticks))
         # f"[{i * step}, {(i + 1) * step})" for i in range(len(xticks))
     ]
     hist, _ = np.histogram(x, bins, range=(x_min, x_max))
