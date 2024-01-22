@@ -15,6 +15,7 @@ streamlit = "^1.30.0"
 matplotlib = "^3.8.2"
 numpy = "^1.26.3"
 opencv-python = "^4.9.0.80"
+simpleeval = "^0.9.13"
 
 
 [tool.poetry.group.dev.dependencies]
