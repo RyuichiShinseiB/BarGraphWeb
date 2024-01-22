@@ -3,11 +3,22 @@ from io import BytesIO
 import numpy as np
 import numpy.typing as npt
 import streamlit as st
-
 from plot import plot_hist
+from simpleeval import simple_eval
 from widgets import create_textbox
 
 st.title("Create Bar Graph!")
+
+
+# 受け取った文字列から四則演算をする関数
+def calc_expression(expression: str) -> float:
+    try:
+        result = simple_eval(expression)
+        return float(result)
+    except Exception as e:
+        print(f"Error: {e}. Returned 1.0.")
+        return 1.0
+
 
 st.markdown("# Gpaph configuration")
 with st.form(key="config_form"):
@@ -32,7 +43,13 @@ with st.form(key="config_form"):
         filename = f"{csv_path.name.split('.')[0]}"
 
     st.markdown("## Unit conversion")
-    nm_per_px = st.text_input("unit: nm / pixel", value="1", key="nm_per_px")
+    unit_cvt_const = create_textbox(
+        "unit conversion (example: nm/px)",
+        value_type=float,
+        default_value="1",
+        key="unit_cvt_const",
+        cvt_func=calc_expression,
+    )
 
     # configuration of x range
     st.markdown("## Set x-axis Configuration")
@@ -134,7 +151,7 @@ if data is None:
     st.caption("Please select valid csv file.")
 else:
     fig = plot_hist(
-        x=data,
+        x=data * unit_cvt_const,
         xlim=(x_min, x_max),
         ylim=(y_min, y_max),
         step=histogram_step,
