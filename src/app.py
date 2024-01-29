@@ -27,8 +27,9 @@ with st.form(key="config_form"):
     st.markdown("## Upload your csv file")
     csv_path = st.file_uploader("csv file", type="csv")
 
+    # サンプルデータの表示をするかどうか
     is_using_sample_data = st.checkbox(
-        "Check this box if you hope to show sample data.",
+        "Check this checkbox if you wish to view sample data.",
         key="is_using_sample_data",
     )
     # ヘッダー（カラム名）を含むか
