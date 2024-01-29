@@ -25,14 +25,26 @@ with st.form(key="config_form"):
     # ファイルのアップロード
     st.markdown("## Upload your csv file")
     csv_path = st.file_uploader("csv file", type="csv")
+    is_using_sample_data = st.checkbox(
+        "Check this box if you hope to show sample data.",
+        key="is_using_sample_data",
+    )
     # ヘッダー（カラム名）を含むか
     has_header = st.checkbox(
         "Does the csv file include headers and columns?",
         key="has_header"
     )
+
     if csv_path is None:
-        data: npt.NDArray[np.float64] | None = None
-        filename: str | None = None
+        if is_using_sample_data:
+            data: npt.NDArray[np.float64] | None = np.loadtxt(
+                "./sample_data/randn_1D.csv",
+                delimiter=",",
+            )
+            filename: str | None = "sample_data"
+        else:
+            data = None
+            filename = None
     else:
         # ヘッダー（カラム名）があれば一行目は削除する
         data = np.loadtxt(
