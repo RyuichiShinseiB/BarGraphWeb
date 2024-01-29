@@ -3,8 +3,9 @@ from io import BytesIO
 import numpy as np
 import numpy.typing as npt
 import streamlit as st
-from plot import plot_hist
 from simpleeval import simple_eval
+
+from plot import plot_hist
 from widgets import create_textbox
 
 st.title("Create Bar Graph!")
@@ -25,6 +26,7 @@ with st.form(key="config_form"):
     # ファイルのアップロード
     st.markdown("## Upload your csv file")
     csv_path = st.file_uploader("csv file", type="csv")
+
     is_using_sample_data = st.checkbox(
         "Check this box if you hope to show sample data.",
         key="is_using_sample_data",
@@ -38,7 +40,7 @@ with st.form(key="config_form"):
     if csv_path is None:
         if is_using_sample_data:
             data: npt.NDArray[np.float64] | None = np.loadtxt(
-                "./sample_data/randn_1D.csv",
+                "./src/sample_data/randn_1D.csv",
                 delimiter=",",
             )
             filename: str | None = "sample_data"
