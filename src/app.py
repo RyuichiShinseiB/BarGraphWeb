@@ -29,6 +29,14 @@ with st.form(key="config_form"):
     st.markdown("## Upload your csv file")
     csv_path = st.file_uploader("csv file", type="csv")
 
+    config_path = st.file_uploader(
+        "If you have a graph setup file, you can upload it.",
+        type="json")
+    if config_path is None:
+        graph_config = GraphConf()
+    else:
+        pass
+
     # サンプルデータの表示をするかどうか
     is_using_sample_data = st.checkbox(
         "Check this checkbox if you wish to view sample data.",
