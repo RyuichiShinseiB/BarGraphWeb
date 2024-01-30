@@ -1,0 +1,20 @@
+{
+    "has_header": false,
+    "unit_cvt_const": 1.0,
+
+    "x_min": 0.0,
+    "x_max": 100.0,
+    "step": 1.0,
+    "bim_width": 0.8,
+    "x_label": "x",
+
+    "y_min": 0.0,
+    "y_max": 100.0,
+    "y_label": "y",
+
+    "is_showing_legend": true,
+    "legend": "",
+    "is_set_xticklabels": false,
+    "label_angle": 0.0
+}
+
