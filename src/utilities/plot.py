@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
 from matplotlib.figure import Figure
-from type import GraphConf
+
+from utilities.type import GraphConf
 
 
 def _is_not_none_or_nan(
