@@ -1,9 +1,11 @@
+# TODO: デフォルト状態に戻るボタンの追加
 from io import BytesIO
 
 import numpy as np
 import numpy.typing as npt
 import streamlit as st
 from simpleeval import simple_eval
+
 from utilities.plot import plot_hist
 from utilities.type import GraphConf
 from utilities.widgets import create_textbox
@@ -19,23 +21,25 @@ def calc_expression(expression: str) -> float:
         return 1.0
 
 
-graph_config = GraphConf()
-
 st.title("Create Bar Graph!")
 
 st.markdown("# Gpaph configuration")
 with st.form(key="config_form"):
-    # ファイルのアップロード
-    st.markdown("## Upload your csv file")
-    csv_path = st.file_uploader("csv file", type="csv")
-
+    st.markdown("## Upload your config json file")
+    # コンフィグファイルのアップロード
     config_path = st.file_uploader(
         "If you have a graph setup file, you can upload it.",
         type="json")
     if config_path is None:
-        graph_config = GraphConf()
+        graph_config = GraphConf.from_json(
+            "./src/sample_data/default_graph_config.json"
+        )
     else:
-        pass
+        graph_config = GraphConf.from_json(config_path)
+
+    # ファイルのアップロード
+    st.markdown("## Upload your csv file")
+    csv_path = st.file_uploader("csv file", type="csv")
 
     # サンプルデータの表示をするかどうか
     is_using_sample_data = st.checkbox(
@@ -46,6 +50,7 @@ with st.form(key="config_form"):
     # ヘッダー（カラム名）を含むか
     graph_config.has_header = st.checkbox(
         "Does the csv file include headers and columns?",
+        value=graph_config.has_header,
         key="has_header"
     )
 
@@ -72,7 +77,8 @@ with st.form(key="config_form"):
     graph_config.unit_cvt_const = create_textbox(
         "The csv data is multiplied by this value",
         value_type=float,
-        default_value="1",
+        # default_value="1",
+        default_value=str(graph_config.unit_cvt_const),
         key="unit_cvt_const",
         cvt_func=calc_expression,
     )
@@ -84,33 +90,40 @@ with st.form(key="config_form"):
         graph_config.x_min = create_textbox(
             "x min",
             float,
-            default_value="nan",
-            key="x_min"
+            # default_value="None",
+            default_value=str(graph_config.x_min),
+            key="x_min",
+            cvt_func=lambda val: None if val == "None" else float(val),
         )
 
     with cols_x_minmax[1]:
         graph_config.x_max = create_textbox(
             "x-max",
             float,
-            default_value="nan",
+            # default_value="None",
+            default_value=str(graph_config.x_max),
             key="x_max",
+            cvt_func=lambda val: None if val == "None" else float(val),
         )
     graph_config.histogram_step = create_textbox(
         "step",
         value_type=float,
-        default_value="1",
+        # default_value="1",
+        default_value=str(graph_config.histogram_step),
         key="histogram_step",
     )
     graph_config.bin_width = create_textbox(
         "width of bins",
         value_type=float,
-        default_value="0.8",
+        # default_value="0.8",
+        default_value=str(graph_config.bin_width),
         key="bin_width"
     )
     graph_config.x_label = create_textbox(
         "label name for x-axis",
         value_type=str,
-        default_value="x",
+        # default_value="x",
+        default_value=str(graph_config.x_label),
         key="x_label",
     )
 
@@ -121,20 +134,25 @@ with st.form(key="config_form"):
         graph_config.y_min = create_textbox(
             "y-min",
             value_type=float,
-            default_value="nan",
-            key="y_min"
+            # default_value="None",
+            default_value=str(graph_config.y_min),
+            key="y_min",
+            cvt_func=lambda val: None if val == "None" else float(val)
         )
     with cols_y_minmax[1]:
         graph_config.y_max = create_textbox(
             "y-max",
             value_type=float,
-            default_value="nan",
-            key="y_max"
+            # default_value="None",
+            default_value=str(graph_config.y_max),
+            key="y_max",
+            cvt_func=lambda val: None if val == "None" else float(val)
         )
     graph_config.y_label = create_textbox(
         "label name for y-axis",
         value_type=str,
-        default_value="y",
+        # default_value="y",
+        default_value=str(graph_config.y_label),
         key="y_label",
     )
 
@@ -143,14 +161,15 @@ with st.form(key="config_form"):
     with cols_legend[0]:
         graph_config.is_showing_legend = st.checkbox(
             "Showing the legends",
-            value=False,
+            value=graph_config.is_showing_legend,
             key="is_showing_legend",
         )
     with cols_legend[1]:
         graph_config.legend = create_textbox(
             "legend",
             str,
-            default_value="" if filename is None else filename,
+            # default_value="" if filename is None else filename,
+            default_value=str(graph_config.legend),
             key="legend",
         )
 
@@ -158,15 +177,17 @@ with st.form(key="config_form"):
     with cols_xtickslabels[0]:
         graph_config.is_set_xticklabels = st.checkbox(
             "changing the x-axis scale to classes",
-            value=False,
+            # value=False,
+            value=graph_config.is_set_xticklabels,
             key="is_set_xticklabels",
         )
 
     with cols_xtickslabels[1]:
         graph_config.label_angle = create_textbox(
             "Angle of label",
-            float,
-            default_value="0",
+            value_type=float,
+            # default_value="0",
+            default_value=str(graph_config.label_angle),
             key="label_angle",
         )
 
@@ -174,7 +195,7 @@ with st.form(key="config_form"):
 
 st.markdown("# Showing graph")
 if data is None:
-    st.caption("Please select valid csv file.")
+    st.text("Please select valid csv file.")
 else:
     fig = plot_hist(x=data, conf=graph_config)
 
@@ -213,3 +234,10 @@ else:
         buf.close()
     else:
         st.text("⚠️: Invalid value")
+
+    st.download_button(
+        "Download graph config",
+        data=graph_config.to_json(),
+        file_name="new_config.json",
+        mime="text/plain"
+    )
