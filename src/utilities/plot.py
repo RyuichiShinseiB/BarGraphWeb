@@ -1,23 +1,15 @@
 import warnings
-from typing import TypeGuard
 
 import matplotlib.pyplot as plt
 import numpy as np
 import numpy.typing as npt
 from matplotlib.figure import Figure
-
 from utilities.type import GraphConf
-
-
-def _is_not_none_or_nan(
-    x: tuple[float, float] | None
-) -> TypeGuard[tuple[float, float]]:
-    return x is not None and not any(np.isnan(x))
 
 
 def calc_hist(
     x: npt.NDArray,
-    xlim: tuple[float, float] | None = None,
+    xlim: tuple[float | None, float | None] | None = None,
     step: float = 1.0
 ) -> tuple[npt.NDArray, npt.NDArray, list[str]]:
     if xlim is not None and len(xlim) > 2:
@@ -26,8 +18,8 @@ def calc_hist(
             "but only the first two will be used.",
             UserWarning
         )
-    x_min = xlim[0] if _is_not_none_or_nan(xlim) else x.min()
-    x_max = xlim[1] if _is_not_none_or_nan(xlim) else x.max()
+    x_min = x.min() if xlim[0] is None else xlim[0]
+    x_max = x.max() if xlim[1] is None else xlim[1]
     bins = np.arange(np.floor(x_min), np.ceil(x_max) + step, step=step)
     xticks = np.convolve(bins, [1/2, 1/2], mode="valid")
     xlabels: list[str] = [
@@ -52,11 +44,9 @@ def plot_hist(x: npt.NDArray, conf: GraphConf) -> Figure:
     ax.set_xlabel(conf.x_label)
     ax.set_ylabel(conf.y_label)
 
-    if _is_not_none_or_nan((conf.x_min, conf.x_max)):
-        ax.set_xlim(left=conf.x_min, right=conf.x_max)
+    ax.set_xlim(left=conf.x_min, right=conf.x_max)
 
-    if _is_not_none_or_nan((conf.y_min, conf.y_max)):
-        ax.set_ylim(bottom=conf.y_min, top=conf.y_max)
+    ax.set_ylim(bottom=conf.y_min, top=conf.y_max)
 
     if conf.is_showing_legend:
         ax.legend()
