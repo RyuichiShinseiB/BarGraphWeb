@@ -4,6 +4,7 @@ import numpy as np
 import numpy.typing as npt
 import streamlit as st
 from simpleeval import simple_eval
+
 from utilities.plot import plot_hist
 from utilities.type import GraphConf
 from utilities.widgets import create_textbox
@@ -19,8 +20,6 @@ def calc_expression(expression: str) -> float:
         return 1.0
 
 
-graph_config = GraphConf()
-
 st.title("Create Bar Graph!")
 
 st.markdown("# Gpaph configuration")
@@ -28,6 +27,14 @@ with st.form(key="config_form"):
     # ファイルのアップロード
     st.markdown("## Upload your csv file")
     csv_path = st.file_uploader("csv file", type="csv")
+
+    config_path = st.file_uploader(
+        "If you have a graph setup file, you can upload it.",
+        type="json")
+    if config_path is None:
+        graph_config = GraphConf()
+    else:
+        pass
 
     # サンプルデータの表示をするかどうか
     is_using_sample_data = st.checkbox(
