@@ -2,18 +2,18 @@
     "has_header": false,
     "unit_cvt_const": 1.0,
 
-    "x_min": 0.0,
-    "x_max": 100.0,
-    "step": 1.0,
-    "bim_width": 0.8,
+    "x_min": null,
+    "x_max": null,
+    "histogram_step": 1.0,
+    "bin_width": 0.8,
     "x_label": "x",
 
-    "y_min": 0.0,
-    "y_max": 100.0,
+    "y_min": null,
+    "y_max": null,
     "y_label": "y",
 
     "is_showing_legend": true,
-    "legend": "",
+    "legend": "sample",
     "is_set_xticklabels": false,
     "label_angle": 0.0
 }
