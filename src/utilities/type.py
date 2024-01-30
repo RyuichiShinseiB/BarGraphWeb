@@ -20,3 +20,10 @@ class GraphConf:
     legend: str = ""
     is_set_xticklabels: bool = False
     label_angle: float = 0.0
+
+    @classmethod
+    def from_json(cls) -> None:
+        pass
+
+    def to_json(self,) -> None:
+        pass
